@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table>
+        {% if libraries is iterable %}
+            {% for library in libraries %}
+                <tr>
+                    <td>{{ library.city.name }}</td>
+                    <td>{{ library.address }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td>{{ libraries.city.name }}</td>
+                <td>{{ libraries.address }}</td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock %}

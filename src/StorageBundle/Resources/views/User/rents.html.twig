@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<table>
+    {% for rent in rents %}
+        <tr>
+            <td>{{ rent.book.name }}</td>
+            <td>{{ rent.library.city.name }}</td>
+            <td>{{ rent.library.address }}</td>
+            <td>{{ rent.createdat|date("d.m.Y H:i:s") }}</td>
+            <td>
+                {% if rent.returnedat is not null %}
+                    {{ rent.returnedat|date("d.m.Y H:i:s") }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

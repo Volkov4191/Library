@@ -1,0 +1,8 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+api:
+    type: rest
+    resource: "@StorageBundle/Controller/API"
+    defaults: {_format: 'html'}

@@ -1,0 +1,212 @@
+<?php
+
+namespace StorageBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups as Groups;
+
+/**
+ * Заказ книги
+ *
+ * @ORM\Entity(repositoryClass="StorageBundle\Repository\Rent")
+ * @ORM\Table(name="rent")
+ * @ORM\HasLifecycleCallbacks()
+ *
+ *
+ * Class Rent
+ * @package StorageBundle\Entity
+ */
+class Rent
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     */
+    private $id;
+
+    /**
+     * Абонимент
+     *
+     * @ORM\ManyToOne(targetEntity="LibraryUser", inversedBy="rents")
+     * @ORM\JoinColumn(name="library_user_id", referencedColumnName="id", nullable=false)
+     *
+     */
+    private $libraryUser;
+
+    /**
+     * Позиция
+     *
+     * @ORM\ManyToOne(targetEntity="LibraryBook", inversedBy="rents")
+     * @ORM\JoinColumn(name="library_book_id", referencedColumnName="id", nullable=false)
+     *
+     */
+    private $libraryBook;
+
+    /**
+     * Когда была взята
+     *
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    private $created_at;
+
+    /**
+     * Когда была отдана
+     * NULL если не отдана
+     *
+     * @ORM\Column(type="datetime",  nullable=true)
+     */
+    private $returned_at;
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function onPrePersist(){
+        $this->created_at = new \DateTime();
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Rent
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @Groups({"Default"})
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set returnedAt
+     *
+     * @param \DateTime $returnedAt
+     *
+     * @return Rent
+     */
+    public function setReturnedAt($returnedAt)
+    {
+        $this->returned_at = $returnedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get returnedAt
+     *
+     * @Groups({"Default"})
+     *
+     * @return \DateTime
+     */
+    public function getReturnedAt()
+    {
+        return $this->returned_at;
+    }
+
+    /**
+     * Set libraryUser
+     *
+     * @param \StorageBundle\Entity\LibraryUser $libraryUser
+     *
+     * @return Rent
+     */
+    public function setLibraryUser(\StorageBundle\Entity\LibraryUser $libraryUser)
+    {
+        $this->libraryUser = $libraryUser;
+
+        return $this;
+    }
+
+    /**
+     * Get libraryUser
+     *
+     *
+     * @return \StorageBundle\Entity\LibraryUser
+     */
+    public function getLibraryUser()
+    {
+        return $this->libraryUser;
+    }
+
+    /**
+     * Set libraryBook
+     *
+     * @param \StorageBundle\Entity\LibraryBook $libraryBook
+     *
+     * @return Rent
+     */
+    public function setLibraryBook(\StorageBundle\Entity\LibraryBook $libraryBook)
+    {
+        $this->libraryBook = $libraryBook;
+
+        return $this;
+    }
+
+    /**
+     * Get libraryBook
+     *
+     *
+     * @return \StorageBundle\Entity\LibraryBook
+     */
+    public function getLibraryBook()
+    {
+        return $this->libraryBook;
+    }
+
+    /**
+     * Получить исходного юзера
+     *
+     *
+     * @Groups({"Default"})
+     *
+     * @return User
+     */
+    public function getUser(){
+        return $this->getLibraryUser()->getUser();
+    }
+
+    /**
+     * Получить исходную книгу
+     *
+     * @Groups({"Default"})
+     *
+     * @return Book
+     */
+    public function getBook(){
+        return $this->getLibraryBook()->getBook();
+    }
+
+    /**
+     * Получить библиотеку, в которой взята книга
+     *
+     * @return Library
+     */
+    public function getLibrary(){
+        return $this->getLibraryUser()->getLibrary();
+    }
+}

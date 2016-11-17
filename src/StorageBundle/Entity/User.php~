@@ -1,0 +1,115 @@
+<?php
+
+namespace StorageBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Component\Serializer\Annotation\Groups as Groups;
+
+/**
+ *
+ * @ORM\Entity(repositoryClass="StorageBundle\Repository\User")
+ * @ORM\Table(name="user")
+ *
+ * @package StorageBundle\Entity
+ */
+class User
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=false)
+     *
+     */
+    private $name;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="LibraryUser", mappedBy="user", cascade={"persist"})
+     * @var ArrayCollection
+     */
+    private $libraryUsers;
+
+    /**
+     * Get id
+     *
+     * @Groups({"Default"})
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return User
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @Groups({"Default"})
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->libraryUsers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add libraryUser
+     *
+     * @param \StorageBundle\Entity\LibraryUser $libraryUser
+     *
+     * @return User
+     */
+    public function addLibraryUser(\StorageBundle\Entity\LibraryUser $libraryUser)
+    {
+        $this->libraryUsers[] = $libraryUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove libraryUser
+     *
+     * @param \StorageBundle\Entity\LibraryUser $libraryUser
+     */
+    public function removeLibraryUser(\StorageBundle\Entity\LibraryUser $libraryUser)
+    {
+        $this->libraryUsers->removeElement($libraryUser);
+    }
+
+    /**
+     * Get libraryUsers
+     *
+     * @return LibraryUser[]
+     */
+    public function getLibraryUsers()
+    {
+        return $this->libraryUsers;
+    }
+}

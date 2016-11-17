@@ -1,0 +1,27 @@
+<table>
+    {% if rents is iterable %}
+        {% for rent in rents %}
+            <tr>
+                <td>{{ rent.book.name }}</td>
+                <td>{{ rent.user.name }}</td>
+                <td>{{ rent.createdat|date("d.m.Y H:i:s") }}</td>
+                <td>
+                    {% if rent.returnedat is not null %}
+                        {{ rent.returnedat|date("d.m.Y H:i:s") }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td>{{ rents.book.name }}</td>
+            <td>{{ rents.user.name }}</td>
+            <td>{{ rents.createdat|date("d.m.Y H:i:s") }}</td>
+            <td>
+                {% if rents.returnedat is not null %}
+                    {{ rents.returnedat|date("d.m.Y H:i:s") }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endif %}
+</table>

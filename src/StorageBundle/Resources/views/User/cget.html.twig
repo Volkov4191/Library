@@ -1,0 +1,16 @@
+<table>
+
+    {% if users is iterable %}
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td>{{ users.id }}</td>
+            <td>{{ users.name }}</td>
+        </tr>
+    {% endif %}
+</table>
